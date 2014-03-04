@@ -1,0 +1,51 @@
+---
+title: Kaizen Garden Documentation
+markdown2extras: wiki-tables, code-friendly
+---
+
+# Kaizen Garden Frequently Asked Questions
+
+This documentation refers to the Kaizen Garden Shared Hosting environment.
+
+# Datacenter Locations
+
+Presently we have a precense in the following cities in the USA:
+
+ * Atlanta, Georgia, USA
+ * Dallas, Texas, USA
+ * New York, New York, USA
+
+We are looking at getting a presence in Amsterdam and London during the course of this year for customers
+wishing to locate their data outside of the USA.  There is still 300+ tickets open on these tasks so we
+may only get round to that later this year (Q4 2014).
+
+# Addons
+
+A number of addons are available to customers.  These range from dedicated IP addresses to SSL certificates.
+
+## Dedicated IP Addresses
+
+Dedicated IP Addresses cost $60/year with a $50 setup charge.
+
+## SSL Certificates
+
+### How do I order a SSL Certificate?
+
+Simply open a support ticket by emailing support@kaizengarden.co and we will walk you through the process.
+
+You can also read about SSL options here.
+
+### Pricing
+
+||**Item**||**Setup**||**Yearly**||
+||RapidSSL Certificate (covers www.example.com and example.com)||$50||$60||
+||RapidSSL Wildcard SSL Certficiate (*.example.com)||$50||$200||
+
+# Security
+
+## Passwords
+
+SmartOS uses blowfish to hash passwords with a salt for system accounts.  We do not store
+plaintext versions of the passwords on disk.  Only the blowfish hash.
+
+On our customer portal, we are using blowfish hashes (aka bcrypt) with a salt.

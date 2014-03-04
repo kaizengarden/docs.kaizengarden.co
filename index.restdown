@@ -1,0 +1,237 @@
+---
+title: Kaizen Garden Documentation
+markdown2extras: wiki-tables, code-friendly
+---
+
+# Kaizen Garden Documentation
+
+This documentation refers to the Kaizen Garden Shared Hosting environment.  More
+specific notes for our Business Hosting services will take place in the near future.
+This is a Work In Process.  It may take some time to have this documentation fill
+in all the gaps.
+
+# What's New
+
+The Shared Hosting infrastructure is built out using the 2013Q3 pkgsrc branch on SmartOS
+Instances.  The following versions of software is installed (this is not a comprehensive
+list of all the 2000+ pkgsrc packages which has been installed):
+
+ * PHP 5.5.4
+ * python 2.7.5
+ * ruby 1.9.3p484
+ * node.js 0.10.24
+ * Percona Server 5.6.13
+ * PostgreSQL 9.3.0
+ * Git 1.8.4
+ * Subversion 1.8.3
+ * svk 2.2.3
+
+# Getting Started
+
+Your welcome email contains your initial login credentials.
+
+# Server SSH Fingerprints
+
+||**Host**                       ||**RSA Key Fingerprint**||**DSA Key Fingerprint**||
+||**atlantis.kaizengarden.us**   || 2a:9f:12:70:0e:89:60:45:4a:71:9f:e8:83:07:09:7f || 71:27:6c:e7:b1:93:bf:f6:16:cf:2c:a3:b4:fd:4c:e3 ||
+||**challenger.kaizengarden.us** || be:12:05:8c:b9:f9:a7:88:e2:0c:a1:a9:32:f0:54:de || 2d:ef:b7:9f:37:7d:33:f5:2c:10:02:b2:a9:1e:4c:0c ||
+||**columbia.kaizengarden.us**   || b8:79:03:7d:00:44:98:6e:67:a0:59:1a:01:21:36:38 || e1:16:66:42:ae:84:de:fe:e5:6d:7c:1c:66:56:47:e4 ||
+||**discovery.kaizengarden.us**  || || ||
+||**endeavour.kaizengarden.us**  || 06:84:bb:ff:64:96:3a:80:5b:b6:45:89:99:cc:29:9d || fb:f8:84:0f:96:cb:76:cc:f4:8f:33:16:65:dd:4a:de ||
+||**enterprise.kaizengarden.us** || 9c:91:a7:4c:a5:86:c5:a5:e0:03:04:c7:c4:7f:56:bb || 5c:3b:68:06:7e:28:d1:36:e6:66:dc:83:ac:8a:c3:70  ||
+
+# Control Panels
+
+There are numerous control panels at present.  Work has begun to build a control panel to integrate DNS and Mail management into one place.
+
+ * [My Kaizen Garden](https://my.kaizengarden.co/)
+ * [PowerAdmin for managing DNS records](http://dns.kaizengarden.net/)
+ * [MailDB (manage email accounts and aliases)](http://mailstore01.kaizengarden.net/)
+
+If you do not have credentials for PowerAdmin or My Kaizen Garden, please drop support@kaizengarden.co an email.  We will provide you with accounts on both interfaces.
+
+When you provision a domain on the mail servers, you will receive a password on screen for managing that domain via MailDB.  We will integrate the MailDB interface into My
+Kaizen Garden in due course.
+
+The Webmin and Virtualmin duo are availabile on port 10000 on Shared Hosts.
+
+# System Resources
+
+## Account Limits
+
+Shared Hosting accounts have various limits depending on which plan you have purchased.
+
+|| ||**Bronze**||**Silver**||**Gold**||
+||**Domains**||5||25||50||
+||**Disk Space**||5 GiB||10 GiB||20 GiB||
+||**Bandwidth**||30 GiB||60 GiB||120 GiB||
+||**Databases**||5||50||100||
+
+## Server Resource Caps
+
+We utilise Solaris Projects to enforce process limits and process resource consumption.
+
+||                                       ||**Bronze**||**Silver**||**Gold**||
+||**Per account memory (applies to RSS)**||100 MiB   ||175 MiB   ||300 MiB ||
+||**Per process memory (applies to total virtual memory or swap)**|| 75 MiB||100 MiB||150 MiB ||
+||**Processes**                                                   ||15||20||25||
+
+
+# Databases
+
+## Percona Server (MySQL)
+
+We use the Percona Server replacement for MySQL.  Percona Server includes numerous patches
+which fixes a plethora of bugs in MySQL as well as containing loads of speed improvements
+for multiple cores.
+
+In order to use Percona Server, you need to ensure that you have enabled the &quot;MySQL database enabled?&quot;
+feature under &quot;Enabled Features&quot; on your primary domain.
+
+# Mail
+
+Mail is hosted on seperated infrastructure from the Shared Hosts.  This enables us to
+scale out mail services depending on the component needing scaling (i.e. Spam Assassin
+instances, dns caches, dccd's etc.).
+
+Domains are presently manually added to the mail storage server and to numerous incoming
+mail scanning servers.  In due course a control panel will allow users to automatically
+do this manual process.
+
+## Incoming Mail
+
+All incoming mail is scanned for virii and spam.  We use numerous RBL's to reject emails from
+hosts known to be spamming or sending out xploits via mail.
+
+## Outgoing Mail
+
+Mail sent from users are sent via different servers to the shared hosting servers.  Your
+smtp.example.com points to the outgoing mail cluster in Dallas by default.
+
+## Mail Client Settings
+
+Here are some notes for configuring various email clients:
+
+### Postbox
+
+File -> New -> Mail Account...
+
+Enter Your Name, Email Address (i.e. localpart@example.com), Password and check Remember Password and click Continue.  It
+may take a while for Postbox to do some figuring out settings for your Incoming Server and Outgoing Server.  Ensure your Username is your email address (i.e. localpart@example.com).  Server Name for incoming is mailstore01.kaizengarden.net (or use mail.example.com).  Type IMAP.  Port 143.  Security STARTTLS.  Server Name for outgoing is smtp.example.com port 587.  Security STARTTLS.
+
+
+# PHP
+
+Each domain has a seperate php.ini file which is passed to php fastcgi process.  For your
+primary domain this is /users/home/username/etc/php5/php.ini and for secondary domains
+/users/home/username/domains/domain.name/etc/php5/php.ini
+
+## Restarting your php fastcgi processes
+
+    $ pkill -9 php
+
+## Enabling PHP extensions
+
+Edit the domains php.ini file (see above for their locations), and search for the commented out line
+for the extension. (i.e. for zlib we look for ;extension=zlib.so).  Uncomment the line (remove the ; in front)
+and restart php:
+
+    $ pkill -9 php
+
+## WordPress
+
+When running WordPress, it is recommended to enable the All in One Security Firewall extension.  Ask support
+for the email address to send all failed login attempts data to (so that it is imported into our abuse tracking
+system).  We block requests from IP's known to host exploited software running (i.e. scripts trying to
+dictionary attack our users WordPress installs, etc.).
+
+# Ruby
+
+These versions have been deprecated it is advisable to make sure your code runs on Ruby 2.0.0 or 2.1.0.
+
+## End-of-Life dates for Ruby Versions
+
+|| **Ruby Version**            || **Announced** || **Maintenance** || **End of Life** ||
+|| **1.8.7**                   || 2011-10-16    || 2012-06         || 2013-06         || 
+|| **1.9.3**                   || 2014-01-10    || 2014-02-23      || 2015-02-23      ||
+|| **Ruby Enterprise Edition** || 2012-02-21    || N/A             || N/A             ||
+
+## Ruby 1.8.7
+
+Ruby 1.8.7 is no longer supported by the Ruby community since July 2013.  It is highly advised that you upgrade your applications to run using
+Ruby 1.9.3.
+
+## Ruby 1.9.3
+
+Ruby 1.9.3 is the presently supported ruby version.  It is highly advised that users with
+older Ruby on Rails sites upgrade to a more modern version of Ruby on Rails and use Ruby 1.9.3.
+
+Support for Ruby version 1.9.3 will end on February 23, 2015.
+
+Today we are announcing our plans for the future of Ruby version 1.9.3.
+
+Currently this branch is in maintenance mode, and will remain so until February 23, 2014.
+
+After February 23 2014, we will only provide security fixes for 1.9.3 until February 23 2015, after which all support will end for 1.9.3.
+
+We highly recommend you upgrade to Ruby 2.1 or 2.0.0 as soon as possible.
+
+
+
+## Ruby 2.0.0
+
+
+
+
+## Upgrading Ruby on Rails Applications
+
+Ryan Bates from Railscasts has published a video explaining how to upgrade to [http://railscasts.com/episodes/415-upgrading-to-rails-4?autoplay=true](Rails 4).
+
+# Backups
+
+We keep 7 days worth of ZFS snapshots for each Shared Hosting server.  These snapshots are replicated to a offsite datacenter.
+
+## Backing up your data
+
+It is always advised to have your own copy of your data.  There are some backup scripts available online which works on Kaizen
+Garden's shared hosting service which you can use from a git clone:
+
+    $ git clone https://github.com/jacques/backup-scripts.git
+
+
+# Addons
+
+## Dedicated IP Addresses
+
+Dedicated IP Addresses cost $60/year with a $50 setup charge.
+
+## SSL Certificates
+
+Best practice for SSL Certificates requires that each year the Private Key is regenerated.  At present a
+2048-bit SSL Private Key is recommended.  We resell Symantec's GeoTrust RapidSSL certificates.
+
+### Pricing
+
+||**Item**||**Setup**||**Yearly**||
+||RapidSSL Certificate (covers www.example.com and example.com)||$50||$60||
+||RapidSSL Wildcard SSL Certficiate (*.example.com)||$50||$200||
+
+### Generating a SSL Private Key
+
+    $ openssl genrsa -out example.com.key
+
+### Generate a Certificate Signing Request (CSR) for a key
+
+    $ openssl req -new -key example.com.key -out example.com.csr
+
+### Check contents of a CSR
+
+    $ openssl req -text -noout -verify -in example.com.csr
+
+# Security
+
+## Shared Hosts
+
+We utilise one-way password hashses using blowfish.
+# Glossary
+
