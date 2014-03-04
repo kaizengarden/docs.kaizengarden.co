@@ -6,8 +6,8 @@ This is the documentation that is shown when you visit [http://docs.kaizengarden
 
 ## License
 
-Copyright 2013-2014 Jacques Marneweck.
-Copyright 2013-2014 Kaizen Garden
+ * Copyright 2013-2014 Jacques Marneweck.
+ * Copyright 2013-2014 Kaizen Garden.
 
 This text of this documentation is released under the [Creative Commons Attribution + ShareAlike (by-sa) licence v3.0](http://creativecommons.org/licenses/by-sa/3.0/).
 
