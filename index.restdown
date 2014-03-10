@@ -152,7 +152,7 @@ These versions have been deprecated it is advisable to make sure your code runs 
 ## End-of-Life dates for Ruby Versions
 
 || **Ruby Version**            || **Announced** || **Maintenance** || **End of Life** ||
-|| **1.8.7**                   || 2011-10-16    || 2012-06         || 2013-06         || 
+|| **1.8.7**                   || 2011-10-16    || 2012-06         || 2013-06         ||
 || **1.9.3**                   || 2014-01-10    || 2014-02-23      || 2015-02-23      ||
 || **Ruby Enterprise Edition** || 2012-02-21    || N/A             || N/A             ||
 
