@@ -133,4 +133,106 @@ primary domain this is /users/home/username/etc/php5/php.ini and for secondary d
 
 ## Enabling PHP extensions
 
-Edit the domains php.ini file (see above
+Edit the domains php.ini file (see above for their locations), and search for the commented out line
+for the extension. (i.e. for zlib we look for ;extension=zlib.so).  Uncomment the line (remove the ; in front)
+and restart php:
+
+    $ pkill -9 php
+
+## WordPress
+
+When running WordPress, it is recommended to enable the All in One Security Firewall extension.  Ask support
+for the email address to send all failed login attempts data to (so that it is imported into our abuse tracking
+system).  We block requests from IP's known to host exploited software running (i.e. scripts trying to
+dictionary attack our users WordPress installs, etc.).
+
+# Ruby
+
+These versions have been deprecated it is advisable to make sure your code runs on Ruby 2.0.0 or 2.1.0.
+
+## End-of-Life dates for Ruby Versions
+
+|| **Ruby Version**            || **Announced** || **Maintenance** || **End of Life** ||
+|| **1.8.7**                   || 2011-10-16    || 2012-06         || 2013-06         ||
+|| **1.9.3**                   || 2014-01-10    || 2014-02-23      || 2015-02-23      ||
+|| **Ruby Enterprise Edition** || 2012-02-21    || N/A             || N/A             ||
+
+## Ruby 1.8.7
+
+Ruby 1.8.7 is no longer supported by the Ruby community since July 2013.  It is highly advised that you upgrade your applications to run using
+Ruby 1.9.3.
+
+## Ruby 1.9.3
+
+Ruby 1.9.3 is the presently supported ruby version.  It is highly advised that users with
+older Ruby on Rails sites upgrade to a more modern version of Ruby on Rails and use Ruby 1.9.3.
+
+Support for Ruby version 1.9.3 will end on February 23, 2015.
+
+Today we are announcing our plans for the future of Ruby version 1.9.3.
+
+Currently this branch is in maintenance mode, and will remain so until February 23, 2014.
+
+After February 23 2014, we will only provide security fixes for 1.9.3 until February 23 2015, after which all support will end for 1.9.3.
+
+We highly recommend you upgrade to Ruby 2.1 or 2.0.0 as soon as possible.
+
+
+
+## Ruby 2.0.0
+
+
+
+
+## Upgrading Ruby on Rails Applications
+
+Ryan Bates from Railscasts has published a video explaining how to upgrade to [http://railscasts.com/episodes/415-upgrading-to-rails-4?autoplay=true](Rails 4).
+
+# Backups
+
+We keep 7 days worth of ZFS snapshots for each Shared Hosting server.  These snapshots are replicated to a offsite datacenter.
+
+## Backing up your data
+
+It is always advised to have your own copy of your data.  There are some backup scripts available online which works on Kaizen
+Garden's shared hosting service which you can use from a git clone:
+
+    $ git clone https://github.com/jacques/backup-scripts.git
+
+
+# Addons
+
+## Dedicated IP Addresses
+
+Dedicated IP Addresses cost $60/year with a $50 setup charge.
+
+## SSL Certificates
+
+Best practice for SSL Certificates requires that each year the Private Key is regenerated.  At present a
+2048-bit SSL Private Key is recommended.  We resell Symantec's GeoTrust RapidSSL certificates.
+
+### Pricing
+
+||**Item**||**Setup**||**Yearly**||
+||RapidSSL Certificate (covers www.example.com and example.com)||$50||$60||
+||RapidSSL Wildcard SSL Certficiate (*.example.com)||$50||$200||
+
+### Generating a SSL Private Key
+
+    $ openssl genrsa -out example.com.key
+
+### Generate a Certificate Signing Request (CSR) for a key
+
+    $ openssl req -new -key example.com.key -out example.com.csr
+
+### Check contents of a CSR
+
+    $ openssl req -text -noout -verify -in example.com.csr
+
+# Security
+
+## Shared Hosts
+
+We utilise one-way password hashses using blowfish.
+
+# Glossary
